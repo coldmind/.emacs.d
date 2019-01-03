@@ -254,6 +254,18 @@
              (local-set-key (kbd "TAB") #'company-indent-or-complete-common)
 	     (electric-pair-mode 1))))
 
+;; Python
+
+(use-package anaconda-mode
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook #'anaconda-mode)
+  (add-hook 'python-mode-hook #'anaconda-eldoc-mode))
+
+(with-eval-after-load 'anaconda-mode
+    (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -i"))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;        Etc        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
