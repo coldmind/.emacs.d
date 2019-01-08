@@ -216,6 +216,12 @@
   (spaceline-toggle-minor-modes-off)
   (spaceline-toggle-buffer-size-off))
 
+;; Undo-tree
+
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode))
+
 ;; Git
 (use-package magit
   :ensure t)
