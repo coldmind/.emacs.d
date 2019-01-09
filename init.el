@@ -222,6 +222,12 @@
   :ensure t
   :init (global-undo-tree-mode))
 
+;; Wind Move
+
+(use-package windmove
+  :ensure t
+  :init (windmove-default-keybindings))
+
 ;; Git
 (use-package magit
   :ensure t)
