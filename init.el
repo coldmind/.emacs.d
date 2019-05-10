@@ -205,7 +205,21 @@
   :ensure t
   :init
   (push 'company-lsp company-backends))
- 
+
+(defun company-yasnippet-or-completion ()
+  "Solve company yasnippet conflicts."
+  (interactive)
+  (let ((yas-fallback-behavior
+         (apply 'company-complete-common nil)))
+    (yas-expand)))
+
+(add-hook 'company-mode-hook
+          (lambda ()
+            (substitute-key-definition
+             'company-complete-common
+             'company-yasnippet-or-completion
+             company-active-map)))
+
 ;; Powerline
 (use-package spaceline
   :ensure t
@@ -268,15 +282,24 @@
 
 ;; Python
 
-(use-package anaconda-mode
+(use-package ivy :ensure t)
+(use-package yasnippet :ensure t)
+(use-package find-file-in-project :ensure t)
+
+(use-package elpy
   :ensure t
   :init
-  (add-hook 'python-mode-hook #'anaconda-mode)
-  (add-hook 'python-mode-hook #'anaconda-eldoc-mode))
+  (elpy-enable)
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --simple-prompt"))
 
-(with-eval-after-load 'anaconda-mode
-    (setq python-shell-interpreter "ipython"
-          python-shell-interpreter-args "--simple-prompt -i"))
+(use-package pyvenv
+  :ensure t)
+
+(use-package pyenv-mode
+  :ensure t
+  :init
+  (pyenv-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;        Etc        ;;
@@ -293,7 +316,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (racer which-key use-package spaceline rustic neotree magit lsp-ui helm-rg helm-projectile goose-theme general flymake-rust flycheck-rust eglot doom-themes company-lsp cargo anzu))))
+    (find-file-in-project yasnippet elpy pyvenv racer which-key use-package spaceline rustic neotree magit lsp-ui helm-rg helm-projectile goose-theme general flymake-rust flycheck-rust eglot doom-themes company-lsp cargo anzu))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
