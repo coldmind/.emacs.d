@@ -12,3 +12,4 @@ eshell
 anaconda-mode
 .cache/
 .lsp-session-*
+local-init.el

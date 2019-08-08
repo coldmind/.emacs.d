@@ -77,7 +77,7 @@
 (tooltip-mode    -1)
 (menu-bar-mode   -1)
 (global-linum-mode 1)
-(add-to-list 'default-frame-alist '(font . "Iosevka-11"))
+(add-to-list 'default-frame-alist '(font . "Iosevka-14"))
 (add-to-list 'default-frame-alist '(height . 24))
 (add-to-list 'default-frame-alist '(width . 80))
 
@@ -300,6 +300,12 @@
   :ensure t
   :init
   (pyenv-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;;       Local       ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+(load "~/.emacs.d/local-init")
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;        Etc        ;;
