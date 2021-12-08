@@ -13,3 +13,5 @@ anaconda-mode
 .cache/
 .lsp-session-*
 local-init.el
+network-security.data
+transient/

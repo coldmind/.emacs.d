@@ -116,6 +116,29 @@
   :config
   (helm-mode 1))
 
+;; Helm-gtags
+(use-package helm-gtags
+  :ensure t
+  :init
+  (setq helm-gtags-ignore-case t
+        helm-gtags-auto-update t
+        helm-gtags-use-input-at-cursor t
+        helm-gtags-pulse-at-cursor t
+        helm-gtags-prefix-key "\C-cg"
+        helm-gtags-suggested-key-mapping t)
+  (add-hook 'dired-mode-hook 'helm-gtags-mode)
+  (add-hook 'eshell-mode-hook 'helm-gtags-mode)
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+  :config
+  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+
 ;; RipGrep
 (use-package helm-rg :ensure t)
 
@@ -201,10 +224,6 @@
 	(let ((completion-at-point-functions completion-at-point-functions-saved))
 	(company-complete-common))))
 
-(use-package company-lsp
-  :ensure t
-  :init
-  (push 'company-lsp company-backends))
 
 (defun company-yasnippet-or-completion ()
   "Solve company yasnippet conflicts."
@@ -219,16 +238,6 @@
              'company-complete-common
              'company-yasnippet-or-completion
              company-active-map)))
-
-;; Powerline
-(use-package spaceline
-  :ensure t
-  :init
-  (setq powerline-default-separator 'slant)
-  :config
-  (spaceline-emacs-theme)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-buffer-size-off))
 
 ;; Undo-tree
 
@@ -249,7 +258,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Language Supports ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
- 
+
+;; Common Lisp
+
+(use-package slime
+  :ensure t
+  :init
+  (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+
 ;; Rust
 
 (use-package rust-mode
@@ -280,26 +297,12 @@
              (local-set-key (kbd "TAB") #'company-indent-or-complete-common)
 	     (electric-pair-mode 1))))
 
-;; Python
+;; Lua
 
-(use-package ivy :ensure t)
-(use-package yasnippet :ensure t)
-(use-package find-file-in-project :ensure t)
-
-(use-package elpy
+(use-package lua-mode
   :ensure t
   :init
-  (elpy-enable)
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --simple-prompt"))
-
-(use-package pyvenv
-  :ensure t)
-
-(use-package pyenv-mode
-  :ensure t
-  :init
-  (pyenv-mode))
+  (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;       Local       ;;
@@ -321,8 +324,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (find-file-in-project yasnippet elpy pyvenv racer which-key use-package spaceline rustic neotree magit lsp-ui helm-rg helm-projectile goose-theme general flymake-rust flycheck-rust eglot doom-themes company-lsp cargo anzu))))
+   '(slime scheme-complete tidal jupyter csv-mode find-file-in-project yasnippet elpy pyvenv racer which-key use-package spaceline rustic neotree magit lsp-ui helm-rg helm-projectile goose-theme general flymake-rust flycheck-rust eglot doom-themes company-lsp cargo anzu)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
